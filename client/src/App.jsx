@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import ChartTab from "./Chart"
+import ChallengeTab from "./Challenge"
 const API = "http://localhost:8000"
 
 function Clock() {
@@ -23,6 +24,7 @@ function Sidebar({ active, setActive }) {
     { id: "risk", icon: "⬡", label: "RISK DESK" },
     { id: "bias", icon: "◎", label: "BIAS BOARD" },
     { id: "journal", icon: "▦", label: "JOURNAL" },
+    { id: "challenge", icon: "◉", label: "CHALLENGE" },
   ]
   return (
     <div style={{ width: 200, background: "#070b14", borderRight: "1px solid #0f172a", display: "flex", flexDirection: "column", minHeight: "100vh", flexShrink: 0 }}>
@@ -418,6 +420,7 @@ export default function App() {
           {active === "risk" && <RiskTab />}
           {active === "bias" && <BiasTab />}
           {active === "journal" && <JournalTab />}
+          {active === "challenge" && <ChallengeTab />}
         </main>
       </div>
     </div>
