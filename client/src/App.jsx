@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import ChartTab from "./Chart"
 import CalendarTab from "./Calendar"
+import SignalsTab from "./Signals"
+import StrengthTab from "./Strength"
 import ChallengeTab from "./Challenge"
 const API = "http://localhost:8000"
 
@@ -22,9 +24,11 @@ function Sidebar({ active, setActive }) {
   const tabs = [
     { id: "news", icon: "◈", label: "INTELLIGENCE" },
     { id: "calendar", icon: "◷", label: "CALENDAR" },
+    { id: "signals", icon: "◆", label: "SIGNALS" },
     { id: "chart", icon: "▣", label: "STRUCTURE" },
     { id: "risk", icon: "⬡", label: "RISK DESK" },
     { id: "bias", icon: "◎", label: "BIAS BOARD" },
+    { id: "strength", icon: "▲", label: "STRENGTH" },
     { id: "journal", icon: "▦", label: "JOURNAL" },
     { id: "challenge", icon: "◉", label: "CHALLENGE" },
   ]
@@ -419,9 +423,11 @@ export default function App() {
         <main style={{ flex: 1, padding: 28, overflowY: "auto", maxHeight: "calc(100vh - 48px)" }}>
           {active === "news" && <NewsTab />}
           {active === "calendar" && <CalendarTab />}
+          {active === "signals" && <SignalsTab />}
           {active === "chart" && <ChartTab />}
           {active === "risk" && <RiskTab />}
           {active === "bias" && <BiasTab />}
+          {active === "strength" && <StrengthTab />}
           {active === "journal" && <JournalTab />}
           {active === "challenge" && <ChallengeTab />}
         </main>
