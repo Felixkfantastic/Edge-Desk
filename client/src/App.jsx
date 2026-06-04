@@ -5,7 +5,7 @@ import CalendarTab from "./Calendar"
 import SignalsTab from "./Signals"
 import StrengthTab from "./Strength"
 import ChallengeTab from "./Challenge"
-const API = "http://localhost:8000"
+const API = "https://edge-desk-production.up.railway.app"
 
 function Clock() {
   const [time, setTime] = useState(new Date())
