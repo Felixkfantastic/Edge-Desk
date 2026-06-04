@@ -56,3 +56,12 @@ def get_news():
             seen.add(item["id"])
             unique.append(item)
     return unique[:20]
+
+@app.get("/api/calendar")
+def get_calendar():
+    from datetime import datetime, timedelta
+    today = datetime.now().strftime("%Y-%m-%d")
+    nextweek = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
+    url = f"https://finnhub.io/api/v1/calendar/economic?from={today}&to={nextweek}&token={FINNHUB_KEY}"
+    response = requests.get(url)
+    return response.json()
