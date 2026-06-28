@@ -20,20 +20,21 @@ function Clock() {
   )
 }
 
-function Sidebar({ active, setActive }) {
+function Sidebar({ active, setActive, open, setOpen }) {
   const tabs = [
     { id: "news", icon: "◈", label: "INTELLIGENCE" },
-    { id: "calendar", icon: "◷", label: "CALENDAR" },
-    { id: "signals", icon: "◆", label: "SIGNALS" },
     { id: "chart", icon: "▣", label: "STRUCTURE" },
+    { id: "signals", icon: "◆", label: "SIGNALS" },
+    { id: "calendar", icon: "◷", label: "CALENDAR" },
+    { id: "strength", icon: "▲", label: "STRENGTH" },
     { id: "risk", icon: "⬡", label: "RISK DESK" },
     { id: "bias", icon: "◎", label: "BIAS BOARD" },
-    { id: "strength", icon: "▲", label: "STRENGTH" },
-    { id: "journal", icon: "▦", label: "JOURNAL" },
     { id: "challenge", icon: "◉", label: "CHALLENGE" },
+    { id: "journal", icon: "▦", label: "JOURNAL" },
   ]
+
   return (
-    <div style={{ width: 200, background: "#070b14", borderRight: "1px solid #0f172a", display: "flex", flexDirection: "column", minHeight: "100vh", flexShrink: 0 }}>
+    <div className={`sidebar ${open ? "open" : ""}`}>
       <div style={{ padding: "24px 20px 20px", borderBottom: "1px solid #0f172a" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
           <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 10px #22c55e" }} />
@@ -43,16 +44,22 @@ function Sidebar({ active, setActive }) {
       </div>
       <nav style={{ flex: 1, padding: "16px 0" }}>
         {tabs.map(t => (
-          <button key={t.id} onClick={() => setActive(t.id)}
-            style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "12px 20px", border: "none", cursor: "pointer", textAlign: "left", background: active === t.id ? "#0f172a" : "transparent", borderLeft: active === t.id ? "2px solid #22c55e" : "2px solid transparent", transition: "all 0.15s" }}>
+          <button key={t.id} onClick={() => { setActive(t.id); setOpen(false) }}
+            style={{
+              width: "100%", display: "flex", alignItems: "center", gap: 12,
+              padding: "12px 20px", border: "none", cursor: "pointer", textAlign: "left",
+              background: active === t.id ? "#0f172a" : "transparent",
+              borderLeft: active === t.id ? "2px solid #22c55e" : "2px solid transparent",
+              transition: "all 0.15s"
+            }}>
             <span style={{ fontSize: 14, color: active === t.id ? "#22c55e" : "#334155" }}>{t.icon}</span>
-            <span style={{ fontSize: 11, fontFamily: "monospace", letterSpacing: 1.5, fontWeight: 700, color: active === t.id ? "#f1f5f9" : "#475569" }}>{t.label}</span>
+            <span style={{ fontSize: 11, fontFamily: "monospace", letterSpacing: 1.5, fontWeight: 700,
+              color: active === t.id ? "#f1f5f9" : "#475569" }}>{t.label}</span>
           </button>
         ))}
       </nav>
       <div style={{ padding: "16px 20px", borderTop: "1px solid #0f172a" }}>
-        <div style={{ fontSize: 10, color: "#1e293b", fontFamily: "monospace", letterSpacing: 1 }}>MARKET STATUS</div>
-        <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e" }} />
           <span style={{ fontSize: 11, color: "#22c55e", fontFamily: "monospace" }}>FOREX OPEN</span>
         </div>
@@ -414,22 +421,36 @@ function JournalTab() {
 
 export default function App() {
   const [active, setActive] = useState("news")
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: "#0a0f1e", color: "#e2e8f0" }}>
-      <style>{`* { box-sizing: border-box; margin: 0; padding: 0; } input:focus { border-color: #22c55e !important; outline: none; } select:focus { outline: none; }`}</style>
-      <TopBar />
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: "#0a0f1e" }}>
+      <div className={`overlay ${sidebarOpen ? "open" : ""}`} onClick={() => setSidebarOpen(false)} />
+      <div className="topbar">
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <button className="menu-btn" onClick={() => setSidebarOpen(!sidebarOpen)}
+            style={{ background: "none", border: "none", color: "#22c55e", fontSize: 22, cursor: "pointer" }}>
+            ☰
+          </button>
+          <span style={{ fontSize: 13, color: "#334155", fontFamily: "monospace", letterSpacing: 2 }}>EDGE DESK</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <Clock />
+          <span style={{ fontSize: 11, color: "#22c55e", fontFamily: "monospace" }}>● LIVE</span>
+        </div>
+      </div>
       <div style={{ display: "flex", flex: 1 }}>
-        <Sidebar active={active} setActive={setActive} />
-        <main style={{ flex: 1, padding: 28, overflowY: "auto", maxHeight: "calc(100vh - 48px)" }}>
+        <Sidebar active={active} setActive={setActive} open={sidebarOpen} setOpen={setSidebarOpen} />
+        <main className="main-content">
           {active === "news" && <NewsTab />}
-          {active === "calendar" && <CalendarTab />}
-          {active === "signals" && <SignalsTab />}
           {active === "chart" && <ChartTab />}
+          {active === "signals" && <SignalsTab />}
+          {active === "calendar" && <CalendarTab />}
+          {active === "strength" && <StrengthTab />}
           {active === "risk" && <RiskTab />}
           {active === "bias" && <BiasTab />}
-          {active === "strength" && <StrengthTab />}
-          {active === "journal" && <JournalTab />}
           {active === "challenge" && <ChallengeTab />}
+          {active === "journal" && <JournalTab />}
         </main>
       </div>
     </div>
