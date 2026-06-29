@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import ChartTab from "./Chart"
 import CalendarTab from "./Calendar"
 import SignalsTab from "./Signals"
@@ -453,6 +454,7 @@ export default function App() {
           {active === "journal" && <JournalTab />}
         </main>
       </div>
+      <SpeedInsights />
     </div>
   )
 }
